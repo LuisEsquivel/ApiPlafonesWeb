@@ -53,12 +53,46 @@ namespace ApiPlafonesWeb.Controllers
         public IActionResult GetByValues([FromBody] ProductosDto p)
         {
             var MostrarEnProductosDestacadosBit = p.MostrarEnProductosDestacadosBit != null ? true : false;
-            var list = repository.GetByValues(x => x.CveClaseVar    == p.CveClaseVar       ||
-                                                   x.CveSubclaseVar == p.CveSubclaseVar    ||
-                                                   x.MostrarEnProductosDestacadosBit == MostrarEnProductosDestacadosBit ||
-                                                   x.CveProdVar     == p.CveProdVar);
+            var CveProdVar = p.CveProdVar  != null ? p.CveProdVar : "";
+            var list = new List<ProductosModel>();
 
-            list = list.Where(x=> x.EstatusBit == true);
+            if (MostrarEnProductosDestacadosBit)
+            {
+                list = repository.GetByValues(x => x.MostrarEnProductosDestacadosBit == MostrarEnProductosDestacadosBit).ToList();
+
+            }
+            else
+            {
+
+                if(p.CveClaseVar == null || p.CveClaseVar == "") 
+                {
+                    if (p.CveProdVar != null && p.CveProdVar != "")
+                    {
+                        list = repository.GetByValues(x => x.CveProdVar == p.CveProdVar).ToList();
+                    }
+                    else
+                    {
+                        list = repository.GetAll().ToList();
+                    }
+                   
+                }
+                else
+                {
+                    if(p.CveSubclaseVar != null && p.CveSubclaseVar != "")
+                    {
+                        list = repository.GetByValues(x => x.CveClaseVar == p.CveClaseVar &&
+                                                           x.CveSubclaseVar == p.CveSubclaseVar).ToList();
+                    }
+                    else 
+                    { 
+                        list = repository.GetByValues(x => x.CveClaseVar == p.CveClaseVar).ToList(); 
+                    }
+                }
+
+            }
+          
+
+            list = list.Where(x=> x.EstatusBit == true).ToList();
 
             var listDto = new List<ProductosDto>();
 
@@ -67,7 +101,7 @@ namespace ApiPlafonesWeb.Controllers
                 listDto.Add(mapper.Map<ProductosDto>(row));
             }
 
-            return Ok(this.response.ResponseValues(this.Response.StatusCode, listDto));
+            return Ok(this.response.ResponseValues(this.Response.StatusCode, listDto.OrderBy(x=> x.OrdenCategoriaInt)));
         }
 
 

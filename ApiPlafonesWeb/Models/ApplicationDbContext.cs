@@ -45,7 +45,7 @@ namespace ApiPlafonesWeb.Models
         {
             if (!optionsBuilder.IsConfigured)
             {            
-              //  optionsBuilder.UseSqlServer("");
+                optionsBuilder.UseSqlServer("data source= 184.168.194.51; initial catalog=plafweb; user id=rtrevino; password=5@spwA22");
             }
         }
 

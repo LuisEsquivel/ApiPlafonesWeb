@@ -21,7 +21,8 @@ namespace ApiPlafonesWeb.Dto.Email
         public string MtsCuadradosInt { get; set; } 
         public string EstadoVar { get; set; } 
         public string AreaInteresVar { get; set; } 
-        public string ExperienciaVar { get; set; } 
+        public string ExperienciaVar { get; set; }
+        public string NombreProductoVar { get; set; }
 
     }
 }

@@ -249,7 +249,7 @@ namespace ApiPlafonesWeb.Helpers
         public string SubjectEmail(EmailDto e)
         {
             var origen = e.OrigenVar;
-            var producto = e.NombreVar;
+            var producto = e.NombreProductoVar;
 
             string subject = "";
 
